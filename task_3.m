@@ -22,8 +22,7 @@ if (theta == pi)
                          % and I know there should be theta instead of '0'
                          
     syms omegaW Rij
-    
-	eqn = omegaW^2 * v0 + c0 == Rij;
+	eqn = omegaW^2 * v0 + c0 == Rij; % why not
     
     sol = solve(eqn, omegaW);
     sol = matlabFunction(sol);
