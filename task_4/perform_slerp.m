@@ -12,11 +12,16 @@ GraphingTimeDelay = 0.05; % The length of time that Matlab should pause between 
 % Remember to test the case with theta > 180, to ensure the shortest path
 % is always chosen
 q0 = [1, 0, 0, 0];
-theta = pi + 0.1;
-q1 = [cos(theta/2), sin(theta/2), 0, 0];
-% Once that begins to work, you can try something a little more complex
-% like below
-% q1 = [cos(theta/2), (1/sqrt(3))*sin(theta/2), (1/sqrt(3))*sin(theta/2), (1/sqrt(3))*sin(theta/2)];
+theta = rand*2*pi;
+
+u = [rand(1) rand(1) rand(1)];
+u = u/norm(u);
+
+q1 = [cos(theta/2), u(1)*sin(theta/2),...
+                    u(2)*sin(theta/2),...
+                    u(3)*sin(theta/2)];
+                
+clear u;
 
 % The 3 axis
 x = [1 0 0];
@@ -24,7 +29,10 @@ y = [0 1 0];
 z = [0 0 1];
 
 % Setup the plot
-figure
+figure('Name','Three dimensional space', ...
+       'Position',[400 500 860 640], ...
+       'MenuBar','figure');
+   
 scale_f = 2;
 axis(scale_f*[-1 1 -1 1 -1 1])
 axis vis3d

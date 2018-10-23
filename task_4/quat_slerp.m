@@ -15,10 +15,16 @@ function [ q_int ] = quat_slerp( q0, q1, steps )
     Omega = quat_multiply(q0 , q1);
     Omega = acos(Omega);
     
+    counterClockwise = 1;
+    if Omega(1) > pi/2
+         counterClockwise = -1;
+    end
+    
     i = 1;
     for t=0:1/steps:1
         q_int(i,:) = sin((1 - t)*Omega)/sin(Omega) * q0 + ...
-                        sin(t*Omega)/sin(Omega) * q1;
+                        counterClockwise*sin(t*Omega)/sin(Omega) * q1;
+        q_int(i,:) = q_int(i,:)/norm(q_int(i,:));
         i = i + 1;
     end
     
