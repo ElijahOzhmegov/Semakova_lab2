@@ -12,6 +12,8 @@ clear omega R theta;
 R = [0.0028 -0.0401  0.9992;
      0.8698 -0.4929 -0.0222;
      0.4934  0.8692  0.0335]; % provided
+
+% R = [1 0 0; 0 -1 0; 0 0 -1]; % it was used to check the special case
  
 theta = acos((trace(R) - 1)/2);
     
@@ -27,7 +29,21 @@ if (theta == pi)
     sol = solve(eqn, omegaW);
     sol = matlabFunction(sol);
     
-    omega = [sol(R(1,1)) sol(R(2,2)) sol(R(3,3))]; 
+    omega = sol(R(1,1));
+    
+    if sol(R(1,1)) == 0
+        omega = [omega sol(R(2,2)) sol(R(3,3))]; 
+    else
+        % as s0 = 0 when theta = pi, let us skip this part in equation
+        syms restOmega omegaX
+        eqn = restOmega * omegaX * v0 == Rij;
+        
+        sol = solve(eqn, omegaX);
+        sol = matlabFunction(sol);
+        
+        omega = [omega sol(R(2,2), omega) sol(R(3,3), omega)]; 
+        
+    end
         
     clear sol c0 s0 v0 eqn omegaW Rij; 
     
